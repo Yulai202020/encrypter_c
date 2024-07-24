@@ -48,4 +48,6 @@ int main() {
     }
 
     fclose(fptr);
+    free(fcontent);
+    free(can_be);
 }
