@@ -6,17 +6,32 @@
 char* available = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz !?,.\"/\\#";
 
 int main() {
-    FILE *fptr = fopen("enc.txt", "rb");
+    FILE* fptr = fopen("enc.txt", "rb");
     int fsize = 0;
     fseek(fptr, 0, SEEK_END);
     fsize = ftell(fptr);
     rewind(fptr);
 
     char* fcontent = (char*) malloc(sizeof(char) * fsize);
+
+    if (fcontent == NULL) {
+        fprintf(stderr, "Memory allocation error.\n");
+        fclose(fptr);
+        return 1;
+    }
+
     fread(fcontent, 1, fsize, fptr);
 
     int count = 0;
     int* can_be = (int*) malloc(255);
+
+    if (can_be == NULL) {
+        fprintf(stderr, "Memory allocation error.\n");
+        free(fcontent);
+        fclose(fptr);
+        return 1;
+    }
+
     memset(can_be, -1, 255);
 
     bool idk = false;
@@ -50,4 +65,6 @@ int main() {
     fclose(fptr);
     free(fcontent);
     free(can_be);
+
+    return 0;
 }
